@@ -1,31 +1,48 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+// Coba gunakan CORS jika tersedia (untuk Localhost), jika tidak (Netlify) abaikan
+try {
+    const cors = require('cors');
+    app.use(cors());
+} catch (e) {
+    console.log("CORS tidak terinstal, melewati...");
+}
 
 app.use(express.json());
 app.use(express.static('public'));
 
 const DB_PATH = path.join(__dirname, 'db.json');
 
-// Helper untuk baca/tulis JSON
-const readDB = () => JSON.parse(fs.readFileSync(DB_PATH));
+// Helper baca/tulis tetap sama
+const readDB = () => {
+    try {
+        return JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));
+    } catch (err) {
+        return { accounts: [], votes: [] };
+    }
+};
 const writeDB = (data) => fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
 
-// Endpoint Auth
+// Endpoint tetap menggunakan logika yang sudah kita perbaiki sebelumnya
 app.post('/api/register', (req, res) => {
     const db = readDB();
-    if (db.accounts.find(u => u.nim === req.body.nim)) return res.status(400).send("NIM sudah ada");
+    if (db.accounts.some(u => u.nim === req.body.nim)) {
+        return res.status(400).json({ success: false, msg: "NIM sudah terdaftar!" });
+    }
     db.accounts.push(req.body);
     writeDB(db);
-    res.status(201).send("Berhasil");
+    res.status(201).json({ success: true });
 });
 
 app.post('/api/login', (req, res) => {
     const db = readDB();
     const user = db.accounts.find(u => u.nim === req.body.nim && u.password === req.body.password);
-    if (!user) return res.status(401).send("NIM atau Password salah");
+    if (!user) return res.status(401).json({ success: false, msg: "NIM atau Password salah" });
     res.json(user);
 });
 
