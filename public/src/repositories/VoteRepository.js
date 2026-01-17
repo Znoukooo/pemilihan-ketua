@@ -1,16 +1,16 @@
+// public/src/repositories/VoteRepository.js
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+// Masukkan kredensial dari dashboard Supabase Anda
+const supabaseUrl = 'https://cnfpzuarlcqoatgpkoqh.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNuZnB6dWFybGNxb2F0Z3Brb3FoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODkzNjQsImV4cCI6MjA4NDE2NTM2NH0.vYAeU7GqwhO7uWmYTicqiXRI9TCp_aaCrgKtDBDXrgg'; 
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 export default class VoteRepository {
     constructor() {
         // Cek apakah aplikasi berjalan di localhost
         this.isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-        
-        if (!this.isLocal && !localStorage.getItem('db_pemilihan')) {
-            localStorage.setItem('db_pemilihan', JSON.stringify({ accounts: [], votes: [] }));
-        }
     }
-
-    // --- HELPER UNTUK LOCALSTORAGE (NETLIFY) ---
-    getLB() { return JSON.parse(localStorage.getItem('db_pemilihan')); }
-    saveLB(data) { localStorage.setItem('db_pemilihan', JSON.stringify(data)); }
 
     // --- LOGIKA REGISTER ---
     async saveAccount(userData) {
@@ -22,11 +22,9 @@ export default class VoteRepository {
             });
             return res.ok;
         } else {
-            const db = this.getLB();
-            if (db.accounts.find(u => u.nim === userData.nim)) return false;
-            db.accounts.push(userData);
-            this.saveLB(db);
-            return true;
+            // DI NETLIFY: Simpan ke tabel 'accounts' di Supabase
+            const { error } = await supabase.from('accounts').insert([userData]);
+            return !error;
         }
     }
 
@@ -40,8 +38,14 @@ export default class VoteRepository {
             });
             return res.ok ? await res.json() : null;
         } else {
-            const db = this.getLB();
-            return db.accounts.find(u => u.nim === nim && u.password === password) || null;
+            // DI NETLIFY: Cek ke tabel 'accounts' di Supabase
+            const { data } = await supabase
+                .from('accounts')
+                .select('*')
+                .eq('nim', nim)
+                .eq('password', password)
+                .single();
+            return data || null;
         }
     }
 
@@ -55,64 +59,33 @@ export default class VoteRepository {
             });
             return res.ok;
         } else {
-            const db = this.getLB();
-            db.votes.push(voteData);
-            this.saveLB(db);
-            return true;
-        }
-    }
-
-    // --- LOGIKA UPDATE ---
-    async updateVote(index, updatedData) {
-        if (this.isLocal) {
-            const res = await fetch(`/api/votes/${index}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedData)
-            });
-            return res.ok;
-        } else {
-            const db = this.getLB();
-            db.votes[index] = updatedData;
-            this.saveLB(db);
-            return true;
-        }
-    }
-
-    // --- LOGIKA DELETE ---
-    async deleteVote(index) {
-        if (this.isLocal) {
-            const res = await fetch(`/api/votes/${index}`, { method: 'DELETE' });
-            return res.ok;
-        } else {
-            const db = this.getLB();
-            db.votes.splice(index, 1);
-            this.saveLB(db);
-            return true;
+            // DI NETLIFY: Simpan ke tabel 'votes' di Supabase
+            const { error } = await supabase.from('votes').insert([voteData]);
+            return !error;
         }
     }
 
     // --- LOGIKA AMBIL DATA ---
     async getAllVotes() {
         if (this.isLocal) {
-            // Di Localhost: Ambil dari API Node.js
             const res = await fetch('/api/votes');
             return await res.json();
         } else {
-            // DI NETLIFY: Ambil file fisik db.json yang ada di folder yang sama
-            try {
-                const response = await fetch('./db.json'); // Path relatif ke index.html
-                const dataFromFile = await response.json();
-                
-                // Gabungkan dengan data baru di browser user (LocalStorage)
-                const localData = this.getLB();
-                const allVotes = [...dataFromFile.votes, ...localData.votes];
-                
-                // Filter agar NIM unik (tidak double)
-                return Array.from(new Map(allVotes.map(item => [item.nim, item])).values());
-            } catch (error) {
-                return this.getLB().votes;
-            }
+            // DI NETLIFY: Ambil semua data dari tabel 'votes' Supabase
+            const { data } = await supabase.from('votes').select('*');
+            return data || [];
+        }
+    }
+
+    // --- LOGIKA DELETE ---
+    async deleteVote(indexOrNim) {
+        if (this.isLocal) {
+            const res = await fetch(`/api/votes/${indexOrNim}`, { method: 'DELETE' });
+            return res.ok;
+        } else {
+            // DI NETLIFY: Hapus berdasarkan NIM (lebih aman daripada index)
+            const { error } = await supabase.from('votes').delete().eq('nim', indexOrNim);
+            return !error;
         }
     }
 }

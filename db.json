@@ -7,14 +7,5 @@
       "tglLahir": "2006-11-02"
     }
   ],
-  "votes": [
-    {
-      "nama": "ROSALIYA",
-      "nim": "241011403323",
-      "kelas": "03TPLP001",
-      "prodi": "Informatika",
-      "tglLahir": "2006-11-02",
-      "pilihan": "Kandidat 1"
-    }
-  ]
+  "votes": []
 }
