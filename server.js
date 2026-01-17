@@ -16,7 +16,8 @@ try {
 app.use(express.json());
 app.use(express.static('public'));
 
-const DB_PATH = path.join(__dirname, 'db.json');
+// server.js
+const DB_PATH = path.join(__dirname, 'public', 'db.json');
 
 // Helper baca/tulis tetap sama
 const readDB = () => {

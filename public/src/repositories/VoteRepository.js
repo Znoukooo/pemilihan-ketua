@@ -95,30 +95,23 @@ export default class VoteRepository {
     // --- LOGIKA AMBIL DATA ---
     async getAllVotes() {
         if (this.isLocal) {
-            // Di Localhost: Tetap ambil dari server Node.js Anda
+            // Di Localhost: Ambil dari API Node.js
             const res = await fetch('/api/votes');
             return await res.json();
         } else {
-            // DI NETLIFY: Ambil file db.json terbaru yang Anda 'Push' ke GitHub
+            // DI NETLIFY: Ambil file fisik db.json yang ada di folder yang sama
             try {
-                // Kita fetch file db.json yang berada di folder root project Anda
-                const response = await fetch('../../db.json');
+                const response = await fetch('./db.json'); // Path relatif ke index.html
                 const dataFromFile = await response.json();
                 
-                // Ambil juga data baru yang disimpan user di browser ini (LocalStorage)
+                // Gabungkan dengan data baru di browser user (LocalStorage)
                 const localData = this.getLB();
-                
-                // GABUNGKAN: Data dari VS Code (File) + Data dari Browser (Local)
-                // Ini memastikan data yang Anda tulis di VS Code otomatis muncul di aplikasi
                 const allVotes = [...dataFromFile.votes, ...localData.votes];
                 
-                // Hilangkan duplikasi jika ada (berdasarkan NIM) agar data tidak double
-                const uniqueVotes = Array.from(new Map(allVotes.map(item => [item.nim, item])).values());
-                
-                return uniqueVotes;
+                // Filter agar NIM unik (tidak double)
+                return Array.from(new Map(allVotes.map(item => [item.nim, item])).values());
             } catch (error) {
-                console.error("Gagal sinkronisasi dengan db.json:", error);
-                return this.getLB().votes; // Fallback jika file tidak terbaca
+                return this.getLB().votes;
             }
         }
     }
