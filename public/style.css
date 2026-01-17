@@ -1,128 +1,179 @@
 /* --- 1. IMPORT FONTS --- */
-/* Mengambil berbagai jenis font dari Google Fonts untuk digunakan di aplikasi */
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Cypro+Minoan&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* --- 2. VARIABLE COLORS --- */
-/* Mendefinisikan warna tema agar mudah diganti di satu tempat saja */
 :root {
-    --text: #040609;
-    --background: #f7f9fc;
-    --primary: #3d78c7;      /* Warna biru utama */
-    --secondary: #8db2e3;    /* Warna biru muda */
-    --accent: #6499e0;
+    /* Light Mode (Mentari Style) */
+    --text: #333333;
+    --background: #f4f7fa;
+    --card-bg: #ffffff;
+    --primary: #0056b3;      /* Biru UNPAM Primary */
+    --secondary: #e7f1ff;    /* Biru Muda/Hover */
     --unpam-blue: #003366;
-    --unpam-orange: #ff6600;
+    --border-color: #e1e8f5;
+
+    /* Dark Mode Variables */
+    --background-dark: #121212;
+    --card-bg-dark: #1e1e1e;
+    --text-dark: #e0e0e0;
+    --border-dark: #333333;
 }
 
 /* --- 3. GLOBAL & BODY STYLES --- */
 * {
-    /* Memaksa semua elemen menggunakan font Poppins */
     font-family: 'Poppins', sans-serif !important;
 }
 
 body {
-    /* Mengatur warna latar belakang seluruh halaman */
     background-color: var(--background) !important;
+    color: var(--text);
+    transition: all 0.3s ease;
 }
 
-/* --- 4. NAVIGATION BAR --- */
+/* --- 4. NAVIGATION BAR (MENTARI STYLE) --- */
 .navbar {
-    background-color: var(--primary);
-    border-bottom: 4px solid var(--secondary); /* Garis bawah di navbar */
+    background-color: #ffffff !important;
+    border-bottom: 1px solid var(--border-color);
 }
 
-/* --- 5. BUTTON STYLES --- */
+.text-unpam-blue { 
+    color: var(--text); 
+    letter-spacing: 0.5px; 
+}
+
+.profile-circle {
+    width: 38px;
+    height: 38px;
+    background-color: #e2e8f0;
+    color: #4a5568;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* --- 5. LOGIN SECTION (MENTARI STYLE) --- */
+#login-section .welcome-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+}
+
+#login-section .card {
+    border: none;
+    border-radius: 15px;
+}
+
+/* Tab Masuk/Daftar */
+.nav-tabs .nav-link {
+    border: none;
+    color: #777;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    padding: 15px 0;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary) !important;
+    border-bottom: 3px solid var(--primary) !important;
+    background: none !important;
+}
+
+/* Input Styles */
+.form-control {
+    background-color: #f8faff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+}
+
+/* --- 6. BUTTON STYLES --- */
 .btn-unpam {
-    background-color: var(--primary);
-    color: white;
+    background-color: var(--primary) !important;
+    color: white !important;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 12px;
 }
 
 .btn-unpam:hover {
-    /* Efek saat tombol disentuh mouse: warna berubah jadi lebih muda */
-    background-color: var(--secondary);
+    background-color: var(--secondary) !important;
+}
+
+/* --- 7. DARK MODE LOGIC --- */
+[data-bs-theme="dark"] {
+    --background: var(--background-dark);
+    --text: var(--text-dark);
+}
+
+[data-bs-theme="dark"] body {
+    background-color: var(--background-dark) !important;
+    color: var(--text-dark);
+}
+
+[data-bs-theme="dark"] .navbar, 
+[data-bs-theme="dark"] .card,
+[data-bs-theme="dark"] .modal-content {
+    background-color: var(--card-bg-dark) !important;
+    border-color: var(--border-dark) !important;
+}
+
+[data-bs-theme="dark"] .form-control {
+    background-color: #2d2d2d;
+    border-color: #444;
     color: white;
 }
 
-/* --- 6. VOTE CARD (STATISTIK) --- */
-.vote-card-item {
-    transition: 0.3s; /* Animasi halus saat hover */
+[data-bs-theme="dark"] .profile-circle {
+    background-color: #333;
+    color: #eee;
 }
 
-.vote-card-item:hover {
-    background-color: white;
+[data-bs-theme="dark"] .welcome-title {
+    color: white;
 }
 
-/* --- 7. MODAL STYLES (POP-UP PROFIL) --- */
-.modal-body {
-    padding: 20px;
-}
-
-.modal-content {
-    border-radius: 12px; /* Membuat sudut modal lebih membulat */
-    border: none;
-}
-
-.modal-dialog {
-    margin: 1.75rem auto;
-    max-width: 500px; /* Membatasi lebar modal di desktop */
-}
-
-/* --- 8. LIST GROUP (DAFTAR SUARA) --- */
-.list-group-item {
-    padding: 1rem 1.25rem;
-    transition: all 0.2s ease-in-out;
-    border: none; /* Menghilangkan border default list Bootstrap */
-}
-
-.list-group-item:hover {
-    /* Efek kartu terangkat dan sedikit membesar saat disentuh mouse */
-    transform: scale(1.01) translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
-}
-
-.text-truncate {
-    display: inline-block;
-    vertical-align: middle;
-}
-
-/* --- 9. LAYOUT DESKTOP (Layar Lebar) --- */
-#main-app .container {
-    max-width: 1100px; /* Agar konten tidak terlalu melebar ke samping */
-}
-
-@media (min-width: 768px) {
-    .col-md-5 {
-        /* Memberi garis pembatas antara form (kiri) dan list (kanan) */
-        padding-right: 30px;
-        border-right: 1px solid #eee;
-    }
-}
-
-/* --- 10. LAYOUT MOBILE (Layar Kecil < 576px) --- */
+/* --- 8. MOBILE RESPONSIVE --- */
 @media (max-width: 576px) {
-    .modal-dialog {
-        margin: 1rem;
-        max-width: none; /* Modal memenuhi layar di HP */
-    }
-    
-    .btn-edit, .btn-delete {
-        flex: 1; /* Tombol jadi lebar penuh/bagi dua di HP */
-    }
-    
-    #welcome-text {
-        display: none; /* Sembunyikan teks nama di navbar agar tidak sesak */
-    }
+    #welcome-text { display: none !important; }
+    .profile-circle { width: 34px; height: 34px; }
+    #login-section .welcome-title { font-size: 1.5rem; }
+}
 
-    .card-body {
-        padding: 1rem;
-    }
-    
-    h3 {
-        font-size: 1.5rem; /* Ukuran angka statistik lebih kecil di HP */
-    }
+/* Dropdown Animation */
+.animate { animation-duration: 0.3s; animation-fill-mode: both; }
+@keyframes slideIn {
+    0% { transform: translateY(1rem); opacity: 0; }
+    100% { transform:translateY(0rem); opacity: 1; }
+}
 
-    .btn-sm {
-        border-radius: 6px !important;
-        font-weight: 500;
+.theme-icon {
+    font-size: 1.5rem;
+    color: #333; /* Warna gelap saat light mode */
+    transition: color 0.3s ease;
+}
+
+/* --- DARK MODE LOGIC UPDATE --- */
+[data-bs-theme="dark"] .theme-icon {
+    color: #ffca28 !important; /* Warna kuning cerah saat dark mode */
+}
+
+/* Pastikan logo dan teks tidak bertabrakan di layar sangat kecil */
+@media (max-width: 400px) {
+    .navbar-brand span {
+        font-size: 0.9rem;
+    }
+    .navbar-brand img {
+        height: 30px;
     }
 }

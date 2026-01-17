@@ -56,23 +56,30 @@ export default class VoteView {
         const list = document.getElementById('voteList');
         list.innerHTML = votes.length ? '' : '<p class="text-muted text-center py-5">Belum ada data suara masuk.</p>';
     
+        // Ambil status tema saat ini
+        const isDarkMode = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    
         votes.forEach((v) => {
             const isOwner = loggedInNim && v.nim === loggedInNim;
             const item = document.createElement('div');
             
-            item.className = `list-group-item border-0 mb-3 shadow-sm rounded-3 border-start border-4 ${isOwner ? 'border-success bg-white' : 'border-primary bg-white'}`;
+            // MODIFIKASI: Gunakan bg-body-tertiary agar otomatis berubah saat dark mode
+            // Tambahkan text-light jika dark mode agar tulisan terlihat jelas
+            item.className = `list-group-item border-0 mb-3 shadow-sm rounded-3 border-start border-4 ${
+                isOwner ? 'border-success' : 'border-primary'
+            } ${isDarkMode ? 'bg-dark text-light' : 'bg-white text-dark'}`;
             
             item.innerHTML = `
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center py-1">
                     <div class="mb-2 mb-md-0 overflow-hidden w-100">
                         <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-                            <h6 class="mb-0 fw-bold text-dark text-truncate" style="max-width: 200px;">${v.nama}</h6>
+                            <h6 class="mb-0 fw-bold text-reset text-truncate" style="max-width: 200px;">${v.nama}</h6>
                             <div class="d-flex gap-1">
                                 ${isOwner ? '<span class="badge bg-success" style="font-size: 0.65rem;">Anda</span>' : ''}
                                 <span class="badge bg-primary" style="font-size: 0.65rem;">${v.pilihan}</span>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center text-muted small">
+                        <div class="d-flex align-items-center ${isDarkMode ? 'text-light-emphasis' : 'text-muted'} small">
                             <span class="text-truncate">${v.nim}</span>
                             <span class="mx-2">|</span>
                             <span class="text-truncate">${v.prodi}</span>
@@ -89,18 +96,17 @@ export default class VoteView {
                                     Hapus
                                 </button>
                             </div>
-                        ` : '<span class="badge bg-light text-muted border py-2 px-3 small w-100 text-center w-md-auto">Read-only</span>'}
+                        ` : `<span class="badge ${isDarkMode ? 'bg-secondary' : 'bg-light text-muted'} border py-2 px-3 small w-100 text-center w-md-auto">Read-only</span>`}
                     </div>
                 </div>
             `;
             list.appendChild(item);
         });
     
-        // PERBAIKAN: Pasang listener klik yang benar
+        // Listener tetap sama...
         document.querySelectorAll('.btn-edit').forEach(b => {
             b.onclick = () => {
                 onEdit(b.dataset.nim);
-                // Memastikan form terbuka kembali saat edit diklik
                 this.toggleFormLock(false);
             };
         });
@@ -176,4 +182,75 @@ export default class VoteView {
         document.getElementById('btnSubmit').disabled = false;
         document.getElementById('btnCancelEdit').classList.remove('d-none');
     }
+
+    constructor() {
+        this.chart = null;
+    }
+    
+    renderStats(votes) {
+        const total = votes.length;
+        const k1 = votes.filter(v => v.pilihan === "Kandidat 1").length;
+        const k2 = votes.filter(v => v.pilihan === "Kandidat 2").length;
+    
+        // Update Angka di Card
+        document.getElementById('totalSuara').innerText = total;
+        document.getElementById('totalK1').innerText = k1;
+        document.getElementById('totalK2').innerText = k2;
+    
+        // PANGGIL FUNGSI DIAGRAM
+        this.updateChart(k1, k2);
+    }
+    
+    updateChart(k1, k2) {
+        const ctx = document.getElementById('voteChart').getContext('2d');
+        
+        if (this.chart) {
+            this.chart.destroy();
+        }
+    
+        this.chart = new Chart(ctx, {
+            type: 'bar', // DIUBAH DARI PIE KE BAR
+            data: {
+                labels: ['Kandidat 1', 'Kandidat 2'],
+                datasets: [{
+                    label: 'Perolehan Suara',
+                    data: [k1, k2],
+                    backgroundColor: [
+                        '#0056b3', // Biru (Kandidat 1)
+                        '#ffc107'  // Kuning (Kandidat 2)
+                    ],
+                    borderRadius: 8, // Membuat ujung batang membulat (Modern)
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false } // Sembunyikan legend karena sudah ada label di bawah
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1, // Agar skala hanya angka bulat (1, 2, 3...)
+                            color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#aaa' : '#666'
+                        },
+                        grid: {
+                            display: false // Sembunyikan garis grid agar lebih clean
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#aaa' : '#666'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
 }
+

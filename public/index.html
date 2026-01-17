@@ -16,86 +16,117 @@
 
 <body class="bg-light">
 
-    <nav class="navbar navbar-dark shadow-sm mb-4">
-        <div class="container d-flex justify-content-between align-items-center">
-            <span class="navbar-brand">UNPAM - 03TPLP001</span>
-            
-            <div id="user-info" class="text-white d-none">
-                <span id="welcome-text" class="me-3 small"></span>
-                <button id="btnSettings" class="btn btn-sm btn-light me-2">⚙️ Profil</button>
-                <button id="btnLogout" class="btn btn-sm btn-outline-light">Logout</button>
-            </div>
-        </div>
-
-        <div class="modal fade" id="modalProfil" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-between align-items-center">
-                        <h5 class="modal-title">Update Profil</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <nav class="navbar navbar-expand navbar-light bg-white shadow-sm sticky-top mb-4">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="src/img/unpam.png" alt="Logo UNPAM" height="40" class="me-2">
+                <span class="fw-bold text-unpam-blue">04TPLP001</span>
+            </a>
+    
+            <div class="d-flex align-items-center ms-auto">
+                <button id="darkModeToggle" class="btn btn-link p-2 me-2 shadow-none">
+                    <ion-icon name="moon-outline" id="darkIcon" class="theme-icon"></ion-icon>
+                </button>
+    
+                <div id="user-info" class="d-none dropdown">
+                    <div class="d-flex align-items-center" data-bs-toggle="dropdown" role="button">
+                        <span id="welcome-text" class="me-2 d-none d-md-inline small fw-medium text-muted"></span>
+                        <div class="profile-circle shadow-sm" id="profileVisual">
+                            <span id="userInitials"><ion-icon name="person-outline"></ion-icon></span>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <input type="text" id="updNama" class="form-control mb-2" placeholder="Nama Lengkap" />
-                        <input type="password" id="updOldPassword" class="form-control mb-2" placeholder="Password Lama" required />
-                        <input type="password" id="updNewPassword" class="form-control mb-2" placeholder="Password Baru" />
-                        <button id="btnSaveProfil" class="btn btn-primary w-100">Simpan Perubahan</button>
-                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow mt-3 animate slideIn">
+                        <li><h6 class="dropdown-header">Menu Mahasiswa</h6></li>
+                        <li><button class="dropdown-item py-2" id="btnSettings"><ion-icon name="settings-outline"></ion-icon> Profil Akun</button></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><button class="dropdown-item py-2 text-danger" id="btnLogout"><ion-icon name="log-out-outline"></ion-icon> Logout</button></li>
+                    </ul>
                 </div>
             </div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="modal fade" id="modalProfil" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header d-flex justify-content-between align-items-center border-0">
+                    <h5 class="modal-title fw-bold">Update Profil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <label class="form-label small">Nama Lengkap</label>
+                        <input type="text" id="updNama" class="form-control" placeholder="Nama Lengkap" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Password Lama</label>
+                        <input type="password" id="updOldPassword" class="form-control" placeholder="Password Lama" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Password Baru</label>
+                        <input type="password" id="updNewPassword" class="form-control" placeholder="Kosongkan jika tidak ganti" />
+                    </div>
+                    <button id="btnSaveProfil" class="btn btn-unpam w-100 py-2">Simpan Perubahan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container pb-5">
         
         <section id="login-section" class="row justify-content-center">
             <div class="col-md-5">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-white">
-                        <ul class="nav nav-tabs card-header-tabs" id="authTab" role="tablist">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold mb-1">Selamat Datang!</h2>
+                    <p class="text-muted small">Silakan masuk ke akun Anda untuk memulai pemilihan ketua kelas.</p>
+                </div>
+
+                <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+                    <div class="card-header bg-white p-0">
+                        <ul class="nav nav-tabs nav-fill card-header-tabs m-0 border-0" id="authTab" role="tablist">
                             <li class="nav-item">
-                                <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-pane">Login</button>
+                                <button class="nav-link active py-3 fw-bold border-0" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-pane">LOGIN</button>
                             </li>
                             <li class="nav-item">
-                                <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-pane">Register</button>
+                                <button class="nav-link py-3 fw-bold border-0" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-pane">REGISTER</button>
                             </li>
                         </ul>
                     </div>
 
-                    <div class="card-body tab-content">
+                    <div class="card-body tab-content p-4">
                         <div class="tab-pane fade show active" id="login-pane">
                             <form id="loginForm">
                                 <div class="mb-3">
-                                    <label class="form-label small">NIM Mahasiswa</label>
-                                    <input type="text" id="loginNim" class="form-control" placeholder="Masukkan NIM" required />
+                                    <label class="form-label small fw-medium">NIM Mahasiswa</label>
+                                    <input type="text" id="loginNim" class="form-control py-2" placeholder="Masukkan NIM Anda" required />
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label small">Password</label>
-                                    <input type="password" id="loginPassword" class="form-control" placeholder="Password" required />
+                                <div class="mb-4">
+                                    <label class="form-label small fw-medium">Password</label>
+                                    <input type="password" id="loginPassword" class="form-control py-2" placeholder="Password" required />
                                 </div>
-                                <button type="submit" class="btn btn-unpam w-100">Login</button>
+                                <button type="submit" class="btn btn-unpam w-100 py-2 shadow-sm">MASUK</button>
                             </form>
                         </div>
 
                         <div class="tab-pane fade" id="register-pane">
-                            <h4 class="mb-3">Daftar Akun Baru</h4>
                             <form id="registerForm">
                                 <div class="mb-2">
-                                    <label class="form-label small">Nama Lengkap</label>
+                                    <label class="form-label small fw-medium">Nama Lengkap</label>
                                     <input type="text" id="regNama" class="form-control" required />
                                 </div>
                                 <div class="mb-2">
-                                    <label class="form-label small">NIM</label>
+                                    <label class="form-label small fw-medium">NIM</label>
                                     <input type="text" id="regNim" class="form-control" placeholder="Min. 10 Angka" required />
                                 </div>
                                 <div class="mb-2">
-                                    <label class="form-label small">Password</label>
-                                    <input type="password" id="regPassword" class="form-control mb-2" placeholder="Password" required />
+                                    <label class="form-label small fw-medium">Password</label>
+                                    <input type="password" id="regPassword" class="form-control" placeholder="Password" required />
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label small">Tanggal Lahir</label>
+                                    <label class="form-label small fw-medium">Tanggal Lahir</label>
                                     <input type="date" id="regTglLahir" class="form-control" required />
                                 </div>
-                                <button type="submit" class="btn btn-success w-100">Daftar Sekarang</button>
+                                <button type="submit" class="btn btn-success w-100 py-2 shadow-sm">DAFTAR SEKARANG</button>
                             </form>
                         </div>
                     </div>
@@ -104,52 +135,52 @@
         </section>
 
         <section id="main-app" class="d-none">
-            <div class="row">
+            <div class="row g-4">
                 
                 <div class="col-md-5">
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <h5 id="formTitle">Form Pendaftaran Pemilih</h5>
-                            <hr />
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4">
+                            <h5 id="formTitle" class="fw-bold mb-3">Form Pendaftaran Pemilih</h5>
+                            <hr class="opacity-50" />
                             <form id="voteForm">
                                 <input type="hidden" id="editIndex" value="">
 
                                 <div class="mb-2">
-                                    <label class="form-label small">Nama Lengkap</label>
+                                    <label class="form-label small fw-medium">Nama Lengkap</label>
                                     <input type="text" id="nama" class="form-control" required />
                                 </div>
 
                                 <div class="mb-2">
-                                    <label class="form-label small">NIM</label>
+                                    <label class="form-label small fw-medium">NIM</label>
                                     <input type="text" id="nim" class="form-control" />
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-6 mb-2">
-                                        <label class="form-label small">Kelas</label>
-                                        <input type="text" id="kelas" class="form-control-plaintext fw-bold" value="03TPLP001" readonly />
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <label class="form-label small fw-medium text-muted">Kelas</label>
+                                        <input type="text" id="kelas" class="form-control-plaintext fw-bold py-0" value="04TPLP001" readonly />
                                     </div>
-                                    <div class="col-6 mb-2">
-                                        <label class="form-label small">Prodi</label>
-                                        <input type="text" id="prodi" class="form-control-plaintext fw-bold" value="Informatika" readonly />
+                                    <div class="col-6">
+                                        <label class="form-label small fw-medium text-muted">Prodi</label>
+                                        <input type="text" id="prodi" class="form-control-plaintext fw-bold py-0" value="Informatika" readonly />
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label small">Tanggal Lahir</label>
+                                    <label class="form-label small fw-medium">Tanggal Lahir</label>
                                     <input type="date" id="tglLahir" class="form-control" required />
                                 </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label small">Pilih Ketua</label>
+                                <div class="mb-4">
+                                    <label class="form-label small fw-medium">Pilih Ketua</label>
                                     <select id="kandidat" class="form-select" required>
                                         <option value="">-- Pilih --</option>
-                                        <option value="Kandidat 1">Kandidat 1 - Ahmad</option>
-                                        <option value="Kandidat 2">Kandidat 2 - Siti</option>
+                                        <option value="Kandidat 1">Kandidat 1 - FANDY AZKAN NUFUS</option>
+                                        <option value="Kandidat 2">Kandidat 2 - MUHAMMAD GILANG WICAKSANA</option>
                                     </select>
                                 </div>
 
-                                <button type="submit" id="btnSubmit" class="btn btn-unpam w-100">Kirim Suara</button>
+                                <button type="submit" id="btnSubmit" class="btn btn-unpam w-100 py-2">Kirim Suara</button>
                                 <button type="button" id="btnCancelEdit" class="btn btn-secondary w-100 mt-2 d-none">Batal Edit</button>
                             </form>
                         </div>
@@ -159,30 +190,60 @@
                 <div class="col-md-7">
                     <div class="row g-3 mb-4">
                         <div class="col-12 col-sm-4">
-                            <div class="card bg-dark text-white border-0 shadow-sm text-center p-3">
-                                <small class="text-uppercase opacity-75 small">Total Suara</small>
-                                <h3 id="totalSuara" class="mb-0 fw-bold">0</h3>
+                            <div class="card bg-dark text-white border-0 shadow-sm rounded-4 p-3 h-100">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <small class="text-uppercase opacity-75 small fw-bold">Total Suara</small>
+                                        <h3 id="totalSuara" class="mb-0 fw-bold mt-1">0</h3>
+                                    </div>
+                                    <div class="fs-1 opacity-50">
+                                        <ion-icon name="stats-chart-outline"></ion-icon>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    
                         <div class="col-6 col-sm-4">
-                            <div class="card bg-primary text-white border-0 shadow-sm text-center p-3">
-                                <small class="text-uppercase opacity-75 small">Kandidat 1</small>
-                                <h3 id="totalK1" class="mb-0 fw-bold">0</h3>
+                            <div class="card bg-primary text-white border-0 shadow-sm rounded-4 p-3 h-100">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <small class="text-uppercase opacity-75 small fw-bold">Kandidat 1</small>
+                                        <h3 id="totalK1" class="mb-0 fw-bold mt-1">0</h3>
+                                    </div>
+                                    <div class="fs-1 opacity-50">
+                                        <ion-icon name="person-outline"></ion-icon>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                    
                         <div class="col-6 col-sm-4">
-                            <div class="card bg-success text-white border-0 shadow-sm text-center p-3">
-                                <small class="text-uppercase opacity-75 small">Kandidat 2</small>
-                                <h3 id="totalK2" class="mb-0 fw-bold">0</h3>
+                            <div class="card bg-warning text-white border-0 shadow-sm rounded-4 p-3 h-100">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <small class="text-uppercase opacity-75 small fw-bold">Kandidat 2</small>
+                                        <h3 id="totalK2" class="mb-0 fw-bold mt-1">0</h3>
+                                    </div>
+                                    <div class="fs-1 opacity-50">
+                                        <ion-icon name="person-outline"></ion-icon>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5>Hasil Perolehan Suara</h5>
-                            <hr />
-                            <div id="voteList" class="list-group"></div>
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-body p-4 text-center">
+                            <h5 class="fw-bold mb-3">Diagram Statistik Pilihan</h5>
+                            <div style="max-height: 250px; display: flex; justify-content: center;">
+                                <canvas id="voteChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3">Hasil Perolehan Suara</h5>
+                            <hr class="opacity-50" />
+                            <div id="voteList" class="list-group list-group-flush"></div>
                         </div>
                     </div>
                 </div>
@@ -191,6 +252,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="src/app.js"></script>
 </body>
 </html>

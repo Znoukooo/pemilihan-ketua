@@ -1,7 +1,20 @@
 {
   "accounts": [
+    {
+      "nama": "KHAISAN RAMZI MUZHAFFAR",
+      "nim": "241011400049",
+      "password": "khai",
+      "tglLahir": "2006-10-23"
+    }
   ],
   "votes": [
-    
+    {
+      "nama": "KHAISAN RAMZI MUZHAFFAR",
+      "nim": "241011400049",
+      "kelas": "04TPLP001",
+      "prodi": "Informatika",
+      "tglLahir": "2006-10-23",
+      "pilihan": "Kandidat 1"
+    }
   ]
 }

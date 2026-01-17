@@ -75,3 +75,29 @@ document.getElementById('btnSettings').onclick = () => {
 document.getElementById('btnSaveProfil').onclick = async () => {
     await app.handleUpdateProfil();
 };
+
+const darkModeToggle = document.getElementById('darkModeToggle');
+const darkIcon = document.getElementById('darkIcon');
+
+darkModeToggle.addEventListener('click', async () => { // Tambahkan async di sini
+    const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
+    const newTheme = isDark ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-bs-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    // Ganti Ikon
+    darkIcon.setAttribute('name', newTheme === 'dark' ? 'sunny-outline' : 'moon-outline');
+
+    // TAMBAHKAN INI: Agar daftar suara (vote list) langsung berubah warna bg-nya
+    if (app.currentUser) {
+        await app.renderResults();
+    }
+});
+
+// Jalankan saat load pertama kali
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-bs-theme', savedTheme);
+if (darkIcon) {
+    darkIcon.setAttribute('name', savedTheme === 'dark' ? 'sunny-outline' : 'moon-outline');
+}
