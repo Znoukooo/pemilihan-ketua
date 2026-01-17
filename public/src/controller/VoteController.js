@@ -129,12 +129,12 @@ export default class VoteController {
 
     async handleDelete(nim) {
         if (confirm("Hapus suara ini?")) {
-            const results = await this.service.getResults();
-            const originalIndex = results.findIndex(v => v.nim === nim);
-            
-            if (originalIndex !== -1) {
-                await this.service.deleteVote(originalIndex);
+            // Kita kirim 'nim' ke service -> repository
+            const success = await this.service.deleteVote(nim);
+            if (success) {
                 await this.renderResults();
+            } else {
+                alert("Gagal menghapus data.");
             }
         }
     }
