@@ -1,0 +1,128 @@
+/* --- 1. IMPORT FONTS --- */
+/* Mengambil berbagai jenis font dari Google Fonts untuk digunakan di aplikasi */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Noto+Sans+Cypro+Minoan&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+/* --- 2. VARIABLE COLORS --- */
+/* Mendefinisikan warna tema agar mudah diganti di satu tempat saja */
+:root {
+    --text: #040609;
+    --background: #f7f9fc;
+    --primary: #3d78c7;      /* Warna biru utama */
+    --secondary: #8db2e3;    /* Warna biru muda */
+    --accent: #6499e0;
+    --unpam-blue: #003366;
+    --unpam-orange: #ff6600;
+}
+
+/* --- 3. GLOBAL & BODY STYLES --- */
+* {
+    /* Memaksa semua elemen menggunakan font Poppins */
+    font-family: 'Poppins', sans-serif !important;
+}
+
+body {
+    /* Mengatur warna latar belakang seluruh halaman */
+    background-color: var(--background) !important;
+}
+
+/* --- 4. NAVIGATION BAR --- */
+.navbar {
+    background-color: var(--primary);
+    border-bottom: 4px solid var(--secondary); /* Garis bawah di navbar */
+}
+
+/* --- 5. BUTTON STYLES --- */
+.btn-unpam {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-unpam:hover {
+    /* Efek saat tombol disentuh mouse: warna berubah jadi lebih muda */
+    background-color: var(--secondary);
+    color: white;
+}
+
+/* --- 6. VOTE CARD (STATISTIK) --- */
+.vote-card-item {
+    transition: 0.3s; /* Animasi halus saat hover */
+}
+
+.vote-card-item:hover {
+    background-color: white;
+}
+
+/* --- 7. MODAL STYLES (POP-UP PROFIL) --- */
+.modal-body {
+    padding: 20px;
+}
+
+.modal-content {
+    border-radius: 12px; /* Membuat sudut modal lebih membulat */
+    border: none;
+}
+
+.modal-dialog {
+    margin: 1.75rem auto;
+    max-width: 500px; /* Membatasi lebar modal di desktop */
+}
+
+/* --- 8. LIST GROUP (DAFTAR SUARA) --- */
+.list-group-item {
+    padding: 1rem 1.25rem;
+    transition: all 0.2s ease-in-out;
+    border: none; /* Menghilangkan border default list Bootstrap */
+}
+
+.list-group-item:hover {
+    /* Efek kartu terangkat dan sedikit membesar saat disentuh mouse */
+    transform: scale(1.01) translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+}
+
+.text-truncate {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* --- 9. LAYOUT DESKTOP (Layar Lebar) --- */
+#main-app .container {
+    max-width: 1100px; /* Agar konten tidak terlalu melebar ke samping */
+}
+
+@media (min-width: 768px) {
+    .col-md-5 {
+        /* Memberi garis pembatas antara form (kiri) dan list (kanan) */
+        padding-right: 30px;
+        border-right: 1px solid #eee;
+    }
+}
+
+/* --- 10. LAYOUT MOBILE (Layar Kecil < 576px) --- */
+@media (max-width: 576px) {
+    .modal-dialog {
+        margin: 1rem;
+        max-width: none; /* Modal memenuhi layar di HP */
+    }
+    
+    .btn-edit, .btn-delete {
+        flex: 1; /* Tombol jadi lebar penuh/bagi dua di HP */
+    }
+    
+    #welcome-text {
+        display: none; /* Sembunyikan teks nama di navbar agar tidak sesak */
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+    
+    h3 {
+        font-size: 1.5rem; /* Ukuran angka statistik lebih kecil di HP */
+    }
+
+    .btn-sm {
+        border-radius: 6px !important;
+        font-weight: 500;
+    }
+}
